@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+
 public class Parser {
     static List<Country> countries = new ArrayList<>();
     static ArrayList<String> name = new ArrayList<>();
@@ -13,10 +14,15 @@ public class Parser {
     static ArrayList<Integer> population = new ArrayList<>();
     static ArrayList<Double> area = new ArrayList<>();
 
-    public List<Country> sortByName(){
+    public static List<Country> sortByName(){
         List<Country> sortedByName = new ArrayList<>(countries);
-        // Sort countries alphabetically (least)
-        //TODO
+        int n = sortedByName.size();
+        sortedByName.sort(new Comparator<Country>() {
+            @Override
+            public int compare(Country o1, Country o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
         return  sortedByName;
     }
 
@@ -35,10 +41,18 @@ public class Parser {
         return sortedByPopulation;
     }
 
-    public List<Country> sortByArea(){
+    public static List<Country> sortByArea(){
         List<Country> sortedByArea = new ArrayList<>(countries);
-        // Sort countries by area (most)
-        //TODO
+        int n = sortedByArea.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (sortedByArea.get(j).getArea() < sortedByArea.get(j + 1).getArea()) {
+                    Country temp = sortedByArea.get(j);
+                    sortedByArea.set(j, sortedByArea.get(j + 1));
+                    sortedByArea.set(j + 1, temp);
+                }
+            }
+        }
         return sortedByArea;
     }
 
@@ -62,10 +76,21 @@ public class Parser {
     public static void main(String[] args) throws IOException {
         setUp();
         List<Country> sortedCountryList = new ArrayList<>();
-        sortedCountryList = sortByPopulation();
-        for(Country country: sortedCountryList){
-            System.out.println(country.toString());
+        System.out.println("How do you want to sort the countries list:\n1.By name\n2.By Population\n3.By area");
+        Scanner userInput = new Scanner(System.in);
+        switch (userInput.nextInt()){
+            case 1:
+                sortedCountryList = sortByName();
+                break;
+            case 2:
+                sortedCountryList = sortByPopulation();
+                break;
+            case 3:
+                sortedCountryList = sortByArea();
+                break;
         }
+        for(Country i: sortedCountryList)
+            System.out.println(i.toString());
     }
 
 }

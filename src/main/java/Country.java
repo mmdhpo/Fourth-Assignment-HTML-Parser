@@ -34,7 +34,7 @@ public class Country {
         return name + "\nCapital: " + capital + "\nPopulation: " + population + "\nArea: " + area +
                 "\n================================================";
     }
-
+    
     @Override
     public boolean equals(Object o) {
         Country country = (Country) o;
